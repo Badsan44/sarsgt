@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Buy $TOKEN</title>
+    <style>
+      body{margin:0;font-family:sans-serif;background:#0a1420;color:#fff}
+      .card{border:2px solid #d22626;border-radius:12px;padding:16px;margin:0;background:#0f1a2a}
+      .btn{background:linear-gradient(135deg,#d22626,#b91c1c);color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;display:inline-block}
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div style="font-weight:700;font-size:18px;margin-bottom:8px">Buy $TOKEN</div>
+      <div style="font-size:14px;color:#c8d2dd;margin-bottom:12px">Instant buy link with your referral code.</div>
+      <a id="buy" class="btn" href="#" target="_blank" rel="noopener">Buy Now</a>
+    </div>
+    <script>
+      (function(){
+        const params = new URLSearchParams(location.search);
+        const ref   = (params.get('ref')||'').replace(/[^A-Za-z0-9_-]/g,'');
+        const href  = `${location.origin}/#/?ref=${encodeURIComponent(ref)}`;
+        document.getElementById('buy').href = href;
+      })();
+    </script>
+  </body>
+</html>

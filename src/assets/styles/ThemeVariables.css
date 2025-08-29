@@ -1,0 +1,102 @@
+/* Theme Variables CSS */
+
+:root {
+  /* Default values (dark theme) */
+  --bg-body: #0a1a25; /* Darker blue to match background */
+  --bg-header: #0a1a25;
+  --bg-header-mobile: #061520e6;
+  --bg-dropdown-demo: #122a3a;
+  --bg-banner-v1: #0a1a25;
+  --bg-banner-v2: #071520e6;
+  --bg-banner-v9: #0a1a25b2;
+  --bg-presale-btn: #1e7a6acc; /* More teal to match the accent */
+  --bg-modal-overlay: #0a1a25b3;
+  --bg-modal: #122a3a;
+  --card-bg: rgba(9, 43, 60, 0.8); /* More blue-teal for cards */
+  --card-border: rgba(243, 186, 47, 0.15); /* Subtle border with golden accent */
+  --card-text: rgba(255, 255, 255, 0.9);
+  --heading-text: #ffffff;
+  --body-text: #e6e6e6;
+  --chart-text: #ffffff;
+  --tokenomics-bg: rgba(9, 43, 60, 0.9);
+  --tokenomics-detail-bg: rgba(7, 35, 50, 0.9);
+  --tokenomics-info-bg: rgba(15, 55, 75, 0.8);
+  --accent-color: #F3BA2F; /* Golden yellow accent color */
+  --accent-color-rgb: 243, 186, 47; /* RGB values for accent color */
+  --highlight-gradient: linear-gradient(180deg, #fff 0%, #F3BA2F 100%); /* Golden gradient */
+
+  /* Transition for theme switching */
+  --theme-transition: all 0.3s ease-in-out;
+}
+
+/* Light theme variables */
+body.theme-light {
+  --bg-body: #f0f7ff; /* Light blue background */
+  --bg-header: #ffffff;
+  --bg-header-mobile: #ffffffe6;
+  --bg-dropdown-demo: #ffffff;
+  --bg-banner-v1: #e5f0ff;
+  --bg-banner-v2: #f0f7ffe6;
+  --bg-banner-v9: #e5f0ff;
+  --bg-presale-btn: #1e7a6acc;
+  --bg-modal-overlay: #e5f0ffb3;
+  --bg-modal: #ffffff;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --card-border: rgba(243, 186, 47, 0.3); /* Golden border */
+  --card-text: rgba(7, 35, 50, 0.9);
+  --heading-text: #072538;
+  --body-text: #1a4060;
+  --chart-text: #072538;
+  --tokenomics-bg: rgba(225, 240, 255, 0.95);
+  --tokenomics-detail-bg: rgba(255, 255, 255, 0.95);
+  --tokenomics-info-bg: rgba(235, 245, 255, 0.9);
+  --accent-color: #1e7a6a; /* Darker teal for light theme */
+  --accent-color-rgb: 30, 122, 106; /* RGB values for accent color */
+  --highlight-gradient: linear-gradient(180deg, #072538 0%, #1e7a6a 100%); /* Teal gradient */
+}
+
+/* Apply these styles to elements */
+body {
+  background-color: var(--bg-body);
+  color: var(--body-text);
+  transition: var(--theme-transition);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-text);
+  transition: var(--theme-transition);
+}
+
+a {
+  color: var(--accent-color);
+  transition: var(--theme-transition);
+}
+
+/* Smooth transition for all elements */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Add theme-specific Chart.js colors */
+body.theme-light .tokenomics-chart canvas {
+  filter: brightness(0.95) contrast(1.1);
+}
+
+/* Theme-specific styles for specific components */
+body.theme-light .toggle-track {
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.theme-light .toggle-thumb {
+  background: #1e7a6a !important; /* Updated toggle color */
+}
+
+/* Make content visible while theme is loading */
+.theme-light, .theme-dark {
+  visibility: visible !important;
+}
+
+/* Handle theme transition flicker */
+body.theme-transition * {
+  transition: none !important;
+}

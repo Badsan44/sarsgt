@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Referral API Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, button {
+            padding: 8px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Secure Referral API Example</h1>
+    
+    <div class="container">
+        <h2>1. Get CSRF Token and API Health</h2>
+        <button id="healthCheck">Check API Health & Get CSRF Token</button>
+        <div id="healthResult"></div>
+    </div>
+    
+    <div class="container">
+        <h2>2. Add Referral Code</h2>
+        <label for="apiKey">API Key:</label>
+        <input type="text" id="apiKey" placeholder="Enter your API key">
+        
+        <label for="referralCode">Referral Code:</label>
+        <input type="text" id="referralCode" placeholder="Enter referral code (6-20 alphanumeric characters)">
+        
+        <label for="ethAddress">Ethereum Address:</label>
+        <input type="text" id="ethAddress" placeholder="Enter Ethereum address (0x...)">
+        
+        <button id="addReferral">Add Referral Code</button>
+        <div id="addResult"></div>
+    </div>
+    
+    <div class="container">
+        <h2>3. Get Referrer by Code</h2>
+        <label for="lookupCode">Referral Code:</label>
+        <input type="text" id="lookupCode" placeholder="Enter referral code to look up">
+        
+        <button id="getReferrer">Get Referrer</button>
+        <div id="getReferrerResult"></div>
+    </div>
+    
+    <div class="container">
+        <h2>4. Get Code by Address</h2>
+        <label for="lookupAddress">Ethereum Address:</label>
+        <input type="text" id="lookupAddress" placeholder="Enter Ethereum address to look up">
+        
+        <button id="getCode">Get Referral Code</button>
+        <div id="getCodeResult"></div>
+    </div>
+    
+    <script>
+        // Store CSRF token
+        let csrfToken = '';
+        const apiUrl = '/api/referral.php'; // Update with your actual API URL
+        
+        // Function to display results
+        function displayResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<pre class="${isError ? 'error' : 'success'}">${JSON.stringify(data, null, 2)}</pre>`;
+        }
+        
+        // Health check and get CSRF token
+        document.getElementById('healthCheck').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${apiUrl}?action=health`);
+                const data = await response.json();
+                
+                if (data.success && data.csrf_token) {
+                    csrfToken = data.csrf_token;
+                    displayResult('healthResult', {
+                        ...data,
+                        message: data.message + ' (CSRF token received and stored)'
+                    });
+                } else {
+                    displayResult('healthResult', data, true);
+                }
+            } catch (error) {
+                displayResult('healthResult', { error: error.message }, true);
+            }
+        });
+        
+        // Add referral code
+        document.getElementById('addReferral').addEventListener('click', async () => {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const code = document.getElementById('referralCode').value.trim();
+            const address = document.getElementById('ethAddress').value.trim();
+            
+            if (!apiKey || !code || !address) {
+                displayResult('addResult', { error: 'All fields are required' }, true);
+                return;
+            }
+            
+            if (!csrfToken) {
+                displayResult('addResult', { error: 'Please get a CSRF token first (Step 1)' }, true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Api-Key': apiKey
+                    },
+                    body: JSON.stringify({
+                        action: 'add_referral',
+                        code: code,
+                        address: address,
+                        csrf_token: csrfToken
+                    })
+                });
+                
+                const data = await response.json();
+                displayResult('addResult', data, !data.success);
+            } catch (error) {
+                displayResult('addResult', { error: error.message }, true);
+            }
+        });
+        
+        // Get referrer by code
+        document.getElementById('getReferrer').addEventListener('click', async () => {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const code = document.getElementById('lookupCode').value.trim();
+            
+            if (!apiKey || !code) {
+                displayResult('getReferrerResult', { error: 'API key and referral code are required' }, true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${apiUrl}?action=get_referrer&code=${encodeURIComponent(code)}`, {
+                    headers: {
+                        'X-Api-Key': apiKey
+                    }
+                });
+                
+                const data = await response.json();
+                displayResult('getReferrerResult', data, !data.success);
+            } catch (error) {
+                displayResult('getReferrerResult', { error: error.message }, true);
+            }
+        });
+        
+        // Get code by address
+        document.getElementById('getCode').addEventListener('click', async () => {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const address = document.getElementById('lookupAddress').value.trim();
+            
+            if (!apiKey || !address) {
+                displayResult('getCodeResult', { error: 'API key and Ethereum address are required' }, true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${apiUrl}?action=get_code_by_address&address=${encodeURIComponent(address)}`, {
+                    headers: {
+                        'X-Api-Key': apiKey
+                    }
+                });
+                
+                const data = await response.json();
+                displayResult('getCodeResult', data, !data.success);
+            } catch (error) {
+                displayResult('getCodeResult', { error: error.message }, true);
+            }
+        });
+    </script>
+</body>
+</html>

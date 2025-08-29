@@ -1,0 +1,7 @@
+{
+    "require": {
+        "web3p/web3.php": "^0.1.6",
+        "simplito/elliptic-php": "^1.0",
+        "kornrunner/keccak": "^1.1"
+    }
+}

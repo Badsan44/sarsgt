@@ -1,0 +1,30 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PresaleEthereum
+    network: sepolia
+    source:
+      address: "0x569462db0b5445289ada5a22dda3da827957438e"
+      abi: Presale
+      startBlock: 8775285
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - User
+        - ReferralEvent
+        - WithdrawalEvent
+        - GlobalStats
+      abis:
+        - name: Presale
+          file: PresaleEthereum/abis/Presale.json
+      eventHandlers:
+        - event: ReferralPurchase(indexed address,indexed
+            address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleReferralPurchase
+        - event: ReferralWithdrawn(indexed address,uint256,uint256,uint256)
+          handler: handleReferralWithdrawn
+      file: PresaleEthereum/PresaleEthereum.wasm

@@ -1,0 +1,29 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PresaleBSC
+    network: chapel
+    source:
+      address: "0x35679280dad682b659c5e1e0f10e5cbbe0c9d608"
+      abi: Presale
+      startBlock: 58429825
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - User
+        - ReferralEvent
+        - WithdrawalEvent
+        - GlobalStats
+      abis:
+        - name: Presale
+          file: ./abis/Presale.json
+      eventHandlers:
+        - event: ReferralPurchase(indexed address,indexed address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleReferralPurchase
+        - event: ReferralWithdrawn(indexed address,uint256,uint256,uint256)
+          handler: handleReferralWithdrawn
+      file: ./src/presale-bsc.ts

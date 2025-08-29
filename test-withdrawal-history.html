@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal History Test - BNBMAGA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .test-section {
+            background: rgba(12, 12, 12, 0.8);
+            border: 2px solid #d22626;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .summary-stats {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(210, 38, 38, 0.05);
+            border: 1px solid rgba(210, 38, 38, 0.2);
+            border-radius: 12px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #d22626;
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #d22626;
+        }
+        .scenario {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+        }
+        .scenario h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .before, .after {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .before {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+        .after {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+        .code {
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .highlight {
+            background: rgba(210, 38, 38, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Withdrawal History Fix - BNBMAGA</h1>
+    
+    <div class="test-section">
+        <h2>✅ Issue Fixed Successfully!</h2>
+        <p><strong>The "Total Withdrawn (Combined)" stat has been removed and replaced with separate ETH and BNB totals!</strong></p>
+        
+        <div class="before-after">
+            <div class="before">
+                <h4>❌ BEFORE (Issue)</h4>
+                <div class="summary-stats">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">1.6912</div>
+                            <div class="stat-label highlight">Total Withdrawn (Combined)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Total Withdrawals</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0.1234 ETH</div>
+                            <div class="stat-label">ETH Chain</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0.5678 BNB</div>
+                            <div class="stat-label">BNB Chain</div>
+                        </div>
+                    </div>
+                </div>
+                <p><em>Problem: Combined total was confusing and not needed</em></p>
+            </div>
+            
+            <div class="after">
+                <h4>✅ AFTER (Fixed)</h4>
+                <div class="summary-stats">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Total Withdrawals</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0.1234 ETH</div>
+                            <div class="stat-label highlight">Total Withdrawn (ETH)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0.5678 BNB</div>
+                            <div class="stat-label highlight">Total Withdrawn (BNB)</div>
+                        </div>
+                    </div>
+                </div>
+                <p><em>Solution: Clear, separate totals for each chain</em></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Test Scenarios</h2>
+        
+        <div class="scenario">
+            <h3>Scenario 1: Both ETH and BNB Withdrawals</h3>
+            <div class="summary-stats">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Total Withdrawals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">0.1234 ETH</div>
+                        <div class="stat-label">Total Withdrawn (ETH)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">0.5678 BNB</div>
+                        <div class="stat-label">Total Withdrawn (BNB)</div>
+                    </div>
+                </div>
+            </div>
+            <p><em>Shows both ETH and BNB totals when withdrawals exist on both chains</em></p>
+        </div>
+
+        <div class="scenario">
+            <h3>Scenario 2: Only BNB Withdrawals</h3>
+            <div class="summary-stats">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Total Withdrawals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">0.5678 BNB</div>
+                        <div class="stat-label">Total Withdrawn (BNB)</div>
+                    </div>
+                </div>
+            </div>
+            <p><em>Only shows BNB total when no ETH withdrawals exist</em></p>
+        </div>
+
+        <div class="scenario">
+            <h3>Scenario 3: Only ETH Withdrawals</h3>
+            <div class="summary-stats">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Total Withdrawals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">0.1234 ETH</div>
+                        <div class="stat-label">Total Withdrawn (ETH)</div>
+                    </div>
+                </div>
+            </div>
+            <p><em>Only shows ETH total when no BNB withdrawals exist</em></p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🛠️ Technical Changes Made</h2>
+        
+        <h3>File Modified:</h3>
+        <div class="code">
+/workspace/Zaz/src/components/referral/WithdrawalHistory.jsx
+        </div>
+        
+        <h3>Changes:</h3>
+        <ol>
+            <li><strong>Removed:</strong> "Total Withdrawn (Combined)" stat that aggregated ETH and BNB</li>
+            <li><strong>Updated:</strong> Labels to "Total Withdrawn (ETH)" and "Total Withdrawn (BNB)"</li>
+            <li><strong>Cleaned:</strong> Removed unused <code>totalWithdrawn</code> variable</li>
+            <li><strong>Maintained:</strong> Conditional rendering - only shows stats for chains with withdrawals</li>
+        </ol>
+        
+        <h3>Key Code Changes:</h3>
+        <div class="code">
+// REMOVED: Combined total calculation and display
+- const totalWithdrawn = withdrawalHistory.reduce((sum, item) => sum + parseFloat(item.amount), 0);
+- &lt;div className="stat-item"&gt;
+-   &lt;div className="stat-value"&gt;{totalWithdrawn.toFixed(4)}&lt;/div&gt;
+-   &lt;div className="stat-label"&gt;Total Withdrawn (Combined)&lt;/div&gt;
+- &lt;/div&gt;
+
+// UPDATED: Improved labels for clarity
+- &lt;div className="stat-label"&gt;ETH Chain&lt;/div&gt;
++ &lt;div className="stat-label"&gt;Total Withdrawn (ETH)&lt;/div&gt;
+
+- &lt;div className="stat-label"&gt;BNB Chain&lt;/div&gt;
++ &lt;div className="stat-label"&gt;Total Withdrawn (BNB)&lt;/div&gt;
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>✨ Benefits of the Fix</h2>
+        <ul>
+            <li><strong>Clarity:</strong> Users can clearly see their withdrawals per chain</li>
+            <li><strong>No Confusion:</strong> No more misleading combined totals</li>
+            <li><strong>Chain-Specific:</strong> Separate tracking for ETH and BNB as requested</li>
+            <li><strong>Conditional Display:</strong> Only shows relevant stats based on actual withdrawals</li>
+            <li><strong>Clean UI:</strong> Removed unnecessary information</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🚀 Implementation Status</h2>
+        <p><strong>✅ COMPLETE:</strong> The withdrawal history section now properly displays separate aggregated withdrawals for ETH and BNB chains instead of a combined total.</p>
+        
+        <p><strong>How it works:</strong></p>
+        <ul>
+            <li>Shows "Total Withdrawals" count across all chains</li>
+            <li>Shows "Total Withdrawn (ETH)" only if ETH withdrawals exist</li>
+            <li>Shows "Total Withdrawn (BNB)" only if BNB withdrawals exist</li>
+            <li>Dynamically adjusts the grid layout based on available data</li>
+        </ul>
+        
+        <p><strong>Ready for production!</strong> 🎉</p>
+    </div>
+</body>
+</html>

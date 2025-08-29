@@ -1,0 +1,44 @@
+# --- Enable rewrite engine (must be outside other blocks) ---
+RewriteEngine On
+
+# --- Preflight: let OPTIONS succeed immediately with 204 (no body) ---
+RewriteCond %{REQUEST_METHOD} =OPTIONS
+RewriteRule ^ - [R=204,L]
+
+# ====== CORS headers for ALL responses (including OPTIONS) ======
+<IfModule mod_headers.c>
+    # Use specific origin to support credentials (cookies for CSRF/session)
+    SetEnvIf Origin "(.*)" ORIGIN=$1
+    Header always set Access-Control-Allow-Origin "%{ORIGIN}e" env=ORIGIN
+    Header always set Vary "Origin"
+
+    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-API-Key, X-Api-Key, X-Signature, X-Timestamp"
+    Header always set Access-Control-Allow-Credentials "true"
+    Header always set Access-Control-Max-Age "86400"
+</IfModule>
+
+# ====== Disable caching for API responses ======
+<IfModule mod_expires.c>
+    ExpiresActive Off
+</IfModule>
+<IfModule mod_headers.c>
+    Header always set Cache-Control "no-cache, no-store, must-revalidate"
+    Header always set Pragma "no-cache"
+    Header always set Expires "0"
+</IfModule>
+
+# ====== PHP settings (remove PHP 7-only module block) ======
+# On PHP 8.x via FPM, use a .user.ini instead of mod_php directives.
+# If you still want runtime limits, create a .user.ini in this folder with:
+#   display_errors=0
+#   max_execution_time=30
+#   memory_limit=128M
+#   post_max_size=8M
+#   upload_max_filesize=2M
+
+# ====== Environment variable (only if you truly need it here) ======
+# WARNING: Storing private keys in .htaccess is risky. Prefer hPanel "Environment Variables".
+<IfModule mod_env.c>
+    SetEnv AGGREGATOR_SIGNER_PK e66a9cfd9d41fb7fde9ea0ffc447bf99fa6471b1eda4cff2fe22b293951e934d
+</IfModule>

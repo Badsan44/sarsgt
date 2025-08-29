@@ -1,0 +1,47 @@
+type User @entity(immutable: false) {
+  id: ID! # wallet address
+  totalReferrals: Int!
+  totalEarned: BigInt!
+  totalWithdrawn: BigInt!
+  referralEvents: [ReferralEvent!]! @derivedFrom(field: "referrer")
+  withdrawalEvents: [WithdrawalEvent!]! @derivedFrom(field: "referrer")
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+type ReferralEvent @entity(immutable: true) {
+  id: ID! # tx_hash-log_index
+  referrer: User!
+  buyer: Bytes!
+  usdAmount: BigInt!
+  nativeCurrencyPaid: BigInt!
+  cashbackAmount: BigInt!
+  bonusPercent: BigInt!
+  newReferralCount: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  blockNumber: BigInt!
+  chain: String!
+  createdAt: BigInt!
+}
+
+type WithdrawalEvent @entity(immutable: true) {
+  id: ID! # tx_hash-log_index
+  referrer: User!
+  amount: BigInt!
+  timestamp: BigInt!
+  totalWithdrawnToDate: BigInt!
+  transactionHash: Bytes!
+  blockNumber: BigInt!
+  chain: String!
+  createdAt: BigInt!
+}
+
+type GlobalStats @entity(immutable: false) {
+  id: ID! # "global"
+  totalUsers: Int!
+  totalReferrals: Int!
+  totalVolume: BigInt!
+  totalWithdrawn: BigInt!
+  updatedAt: BigInt!
+}

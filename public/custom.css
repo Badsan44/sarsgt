@@ -1,0 +1,372 @@
+/* Apply Blinker font to all elements */
+* {
+  font-family: 'Blinker', sans-serif !important;
+}
+
+/* Override all ::before pseudo-elements to have 35% opacity */
+*::before {
+  opacity: 0.35 !important;
+}
+
+/* Change the banner title font size to 100px */
+.banner-title {
+  font-size: 100px !important;
+  line-height: 110px !important;
+}
+
+/* Override responsive styles for banner title and subtitle */
+@media screen and (max-width: 767px) {
+  .banner-title {
+    font-size: 100px !important;
+    line-height: 110px !important;
+  }
+  
+  .banner-subtitle {
+    font-size: 25px !important;
+    line-height: 35px !important;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .banner-title {
+    font-size: 100px !important;
+    line-height: 110px !important;
+  }
+  
+  .banner-subtitle {
+    font-size: 25px !important;
+    line-height: 35px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .banner-title {
+    font-size: 100px !important;
+    line-height: 110px !important;
+  }
+  
+  .banner-subtitle {
+    font-size: 25px !important;
+    line-height: 35px !important;
+  }
+}
+
+/* Specific class for the tokenomics section */
+#tokenomics::before {
+  opacity: 0.35 !important;
+}
+
+/* Target specific classes that might be used for section backgrounds */
+.kTJQRw::before {
+  opacity: 0.35 !important;
+  background: transparent !important;
+}
+
+/* Target roadmap section */
+section[class*="roadmap"]::before {
+  opacity: 0.35 !important;
+}
+
+/* Target banner sections */
+section[class*="banner"]::before,
+div[class*="banner"]::before {
+  opacity: 0.35 !important;
+}
+
+/* Target any element with a ::before pseudo-element */
+[class]::before {
+  opacity: 0.35 !important;
+}
+
+/* Add specific styling for the tokenomics section background */
+#tokenomics {
+  background-image: url('/assets/images/Tokenomics-Elon.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Add a pseudo-element for the background overlay */
+#tokenomics::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgba(0, 0, 0, 0.438) !important; /* 35% opacity black overlay */
+  z-index: -1 !important;
+}
+
+/* Change the background color of the About Our Project section */
+#about {
+  background-color: #d22626 !important;
+}
+
+/* Change the background color of about cards to black with consistent transparency */
+#about .about-card {
+  background: rgba(0, 0, 0, 0.8) !important;
+  background-color: rgba(0, 0, 0, 0.568) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Change the border color of about cards on hover */
+#about .about-card:hover {
+  border-color: #F3BA2F !important;
+}
+
+/* Change the text color of about card headings */
+#about .about-card h3 {
+  color: #F3BA2F !important;
+}
+
+/* Ensure paragraph text in about cards is visible against black background */
+#about .about-card p {
+  color: white !important;
+}
+
+/* Change the font size of the about subtitle */
+#about .about-subtitle {
+  font-size: 22px !important;
+}
+
+/* Add the Tokenomics-Elon.png background image to the tokenomics section */
+#tokenomics {
+  background-image: url('/Tokenomics-Elon.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Change the background of tokenomics cards to black with 80% opacity */
+#tokenomics .tokenomics-card {
+  background: rgba(0, 0, 0, 0.8) !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border-color: #f3ba2f !important;
+}
+
+/* Change the description text color in tokenomics cards to white */
+#tokenomics .tokenomics-card .description {
+  color: white !important;
+}
+
+/* Change the allocation text color in tokenomics cards to white */
+#tokenomics .tokenomics-card .allocation {
+  color: white !important;
+}
+
+/* Change the tokenomics subtitle font color to white and increase font size */
+#tokenomics .tokenomics-subtitle {
+  color: white !important;
+  font-size: 22px !important;
+}
+
+/* Change the tokenomics details background color to black with 80% opacity */
+#tokenomics .tokenomics-details {
+  background: rgba(0, 0, 0, 0.8) !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* Change the tokenomics details hover color to #f3ba2f */
+#tokenomics .tokenomics-details .detail-item:hover {
+  background-color: #f3ba2f !important;
+}
+
+/* Change the tokenomics details item value font color to black */
+#tokenomics .tokenomics-details .detail-item .item-value {
+  color: black !important;
+}
+
+/* Change the tokenomics details item label font color to black */
+#tokenomics .tokenomics-details .detail-item .item-label {
+  color: black !important;
+}
+
+/* Change the details title font color to white */
+#tokenomics .details-title {
+  color: white !important;
+}
+
+/* Change the details title underline color to white */
+#tokenomics .details-title::after {
+  background-color: white !important;
+}
+
+/* Change the tokenomics card border color to #f3ba2f */
+#tokenomics .tokenomics-card {
+  border-color: #f3ba2f !important;
+}
+
+/* Change the tokenomics card allocation line background to #f3ba2f */
+#tokenomics .tokenomics-card:hover .allocation::after {
+  background-color: #f3ba2f !important;
+}
+
+/* Change the roadmap subtitle font size to 22px */
+#roadmap .roadmap-subtitle {
+  font-size: 22px !important;
+}
+
+/* Change the roadmap timeline background gradient to orange-yellow */
+#roadmap .roadmap-timeline::before {
+  background-image: linear-gradient(#e86302 0%, rgb(242, 205, 64) 100%) !important;
+}
+
+/* Change the roadmap content color to black with same opacity and border to white */
+#roadmap .roadmap-content {
+  color: black !important;
+  border-color: white !important;
+  background-color: black !important;
+  opacity: 0.8 !important;
+}
+
+/* Change the roadmap date font color to #F3BA2F */
+#roadmap .roadmap-content .roadmap-date {
+  color: #F3BA2F !important;
+}
+
+/* Change the roadmap content circle background and box-shadow to #F3BA2F */
+#roadmap .roadmap-content::before {
+  background: #F3BA2F !important;
+  box-shadow: 0 0 0 4px #F3BA2F !important;
+}
+
+/* Change the roadmap content hover border color to #F3BA2F */
+#roadmap .roadmap-content:hover {
+  border-color: #F3BA2F !important;
+}
+
+
+
+/* Change the FAQ item background to black with same opacity */
+#faq .faq-item {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border-color: #F3BA2F !important;
+}
+
+/* Change the FAQ header after color to #F3BA2F */
+#faq .faq-header::after {
+  background-color: #F3BA2F !important;
+  opacity: 0 !important;
+}
+
+/* Change the FAQ header h3 font color to white */
+#faq .faq-header h3 {
+  color: white !important;
+}
+
+/* Change the FAQ subtitle font size to 22px */
+#faq .faq-subtitle {
+  font-size: 22px !important;
+}
+
+/* Change the FAQ item hover border color to #f4cc5c */
+#faq .faq-item:hover {
+  border-color: #f4cc5c !important;
+}
+
+
+/* Change the footer social links hover background to #F3BA2F */
+.footer-social-links a:hover {
+  background: #F3BA2F !important;
+}
+
+/* Change the footer widget title after background to linear gradient */
+.footer-links .footer-widget-title::after {
+  background: linear-gradient(90deg, rgb(194, 154, 0) 0%, rgb(211, 199, 27) 100%) !important;
+}
+/* Change the footer social links hover background to #F3BA2F */
+.footer-social-links a:hover {
+  background: #F3BA2F !important;
+}
+
+/* Change the footer-bottom border-top color to #F3BA2F */
+.footer-bottom {
+  border-top-color: #F3BA2F !important;
+}
+
+/* Change the footer links hover color to #F3BA2F */
+.footer-links .footer-links-list li a:hover {
+  color: #F3BA2F !important;
+}
+
+/* Change the footer bottom links hover color to #F3BA2F */
+.footer-bottom .footer-bottom-links li a:hover {
+  color: #F3BA2F !important;
+}
+
+/* Change the navigation menu hover color and after element to #F3BA2F */
+.gittu-nav-menu li a:hover,
+.gittu-nav-menu li a::after {
+  color: #F3BA2F !important;
+}
+
+/* Change the footer bottom links hover color to #F3BA2F */
+.footer-bottom .footer-bottom-links li a:hover {
+  color: #F3BA2F !important;
+}
+
+/* Change the nav menu hover and after color to #F3BA2F */
+.gittu-nav-menu li a:hover {
+  color: #F3BA2F !important;
+}
+
+.gittu-nav-menu li a::after {
+  background: #F3BA2F !important;
+}
+
+/* Add 15px margin between footer about section and footer quick links */
+.footer-quick-links {
+  margin-left: 15px !important;
+}
+
+/* Set resources column width to 198px */
+.footer-resources {
+  width: 198px !important;
+}
+
+/* Set banner content left width to 620px to reduce space between content and presale card */
+.banner-content-left {
+  width: 620px !important;
+}
+
+/* Change the banner title styling */
+.banner-title {
+  font-size: 100px !important;
+  line-height: 110px !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  font-family: 'Blinker', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* Change the banner subtitle font size to 25px */
+.banner-subtitle {
+  font-size: 25px !important;
+  line-height: 35px !important;
+  font-family: 'Blinker', sans-serif !important;
+  font-weight: 500 !important;
+  color: white !important;
+
+  position: relative;
+  display: inline-block;
+  padding: 0 8px;              /* horizontal breathing room */
+  z-index: 0;                  /* keep this at 0 so the ::before (z-1) shows */
+  opacity: 1 !important;       /* ensure the parent isn’t semi-transparent */
+}
+
+.banner-subtitle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;                   /* cover full height */
+  left: -8px;
+  right: -8px;                 /* match the padding edges */
+  background: #F3BA2F !important; /* solid yellow, no alpha */
+  opacity: 0.8 !important;       /* force full opacity */
+  z-index: -1;                 /* behind the text */
+  border-radius: 3px 8px 5px 2px; /* “organic” edges */
+  box-shadow: 2px 3px 4px rgba(0,0,0,0.15);
+}

@@ -1,0 +1,33 @@
+# --- Enable rewrite engine ---
+RewriteEngine On
+
+# Ensure the Authorization header reaches PHP (some stacks strip it)
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# (REMOVE the old rule that appended ?key=... to /attest.php)
+# (REMOVE the old OPTIONS 204 rewrite; PHP handles preflight)
+
+# ====== CORS headers for ALL responses (including OPTIONS) ======
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Accept, Authorization, X-API-Key, X-Api-Key, X-Signature, X-Timestamp, Cache-Control"
+    Header always set Access-Control-Max-Age "86400"
+    Header always set Vary "Origin"
+</IfModule>
+
+# ====== Disable caching for API responses ======
+<IfModule mod_expires.c>
+    ExpiresActive Off
+</IfModule>
+<IfModule mod_headers.c>
+    Header always set Cache-Control "no-cache, no-store, must-revalidate"
+    Header always set Pragma "no-cache"
+    Header always set Expires "0"
+</IfModule>
+
+# ====== (Optional) env var; safer to set in hPanel if possible ======
+<IfModule mod_env.c>
+    SetEnv AGGREGATOR_SIGNER_PK e66a9cfd9d41fb7fde9ea0ffc447bf99fa6471b1eda4cff2fe22b293951e934d
+</IfModule>

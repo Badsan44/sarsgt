@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow: auto; }
+        button { padding: 10px 15px; margin: 10px 0; cursor: pointer; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>CORS Test for Referral API</h1>
+    
+    <div>
+        <label for="apiUrl">API URL:</label>
+        <input type="text" id="apiUrl" style="width: 400px;" value="https://your_hostinger_domain.com/api/referral.php">
+    </div>
+    
+    <h2>Test Health Endpoint</h2>
+    <button id="testHealth">Test Health Endpoint</button>
+    
+    <h2>Test Get Referrer</h2>
+    <div>
+        <label for="referralCode">Referral Code:</label>
+        <input type="text" id="referralCode" value="TESTCODE">
+        <button id="testGetReferrer">Test Get Referrer</button>
+    </div>
+    
+    <h2>Test Add Referral</h2>
+    <div>
+        <label for="newCode">New Code:</label>
+        <input type="text" id="newCode" value="TESTCODE">
+        <label for="address">Ethereum Address:</label>
+        <input type="text" id="address" value="0x1234567890123456789012345678901234567890">
+        <button id="testAddReferral">Test Add Referral</button>
+    </div>
+    
+    <div id="results">
+        <h3>Results:</h3>
+        <pre id="output">No tests run yet.</pre>
+    </div>
+    
+    <script>
+        document.getElementById('testHealth').addEventListener('click', async () => {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const output = document.getElementById('output');
+            
+            try {
+                output.innerHTML = "Testing health endpoint...\n";
+                const response = await fetch(`${apiUrl}?action=health`);
+                const data = await response.json();
+                
+                output.innerHTML += `Status: ${response.status}\n`;
+                output.innerHTML += `Response: ${JSON.stringify(data, null, 2)}\n`;
+                output.innerHTML += `<span class="success">Health check successful!</span>\n`;
+                
+                // Store CSRF token if available
+                if (data.csrf_token) {
+                    localStorage.setItem('csrf_token', data.csrf_token);
+                    output.innerHTML += `CSRF Token stored for future requests.\n`;
+                }
+            } catch (error) {
+                output.innerHTML += `<span class="error">Error: ${error.message}</span>\n`;
+                output.innerHTML += `This is likely a CORS issue. Make sure your API is configured to allow cross-origin requests.\n`;
+            }
+        });
+        
+        document.getElementById('testGetReferrer').addEventListener('click', async () => {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const code = document.getElementById('referralCode').value;
+            const output = document.getElementById('output');
+            
+            try {
+                output.innerHTML = `Testing get referrer for code: ${code}...\n`;
+                const response = await fetch(`${apiUrl}?action=get_referrer&code=${code}`);
+                const data = await response.json();
+                
+                output.innerHTML += `Status: ${response.status}\n`;
+                output.innerHTML += `Response: ${JSON.stringify(data, null, 2)}\n`;
+                
+                if (data.success) {
+                    output.innerHTML += `<span class="success">Get referrer successful!</span>\n`;
+                } else {
+                    output.innerHTML += `<span class="error">Get referrer failed: ${data.error || 'Unknown error'}</span>\n`;
+                }
+            } catch (error) {
+                output.innerHTML += `<span class="error">Error: ${error.message}</span>\n`;
+                output.innerHTML += `This is likely a CORS issue. Make sure your API is configured to allow cross-origin requests.\n`;
+            }
+        });
+        
+        document.getElementById('testAddReferral').addEventListener('click', async () => {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const code = document.getElementById('newCode').value;
+            const address = document.getElementById('address').value;
+            const output = document.getElementById('output');
+            const csrfToken = localStorage.getItem('csrf_token') || '';
+            
+            try {
+                output.innerHTML = `Testing add referral for code: ${code}, address: ${address}...\n`;
+                
+                if (!csrfToken) {
+                    output.innerHTML += `<span class="error">No CSRF token available. Run the health check first.</span>\n`;
+                    return;
+                }
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Api-Key': 'YOUR_SECURE_API_KEY_HERE' // Replace with your actual API key
+                    },
+                    body: JSON.stringify({
+                        action: 'add_referral',
+                        code: code,
+                        address: address,
+                        csrf_token: csrfToken
+                    })
+                });
+                
+                const data = await response.json();
+                
+                output.innerHTML += `Status: ${response.status}\n`;
+                output.innerHTML += `Response: ${JSON.stringify(data, null, 2)}\n`;
+                
+                if (data.success) {
+                    output.innerHTML += `<span class="success">Add referral successful!</span>\n`;
+                } else {
+                    output.innerHTML += `<span class="error">Add referral failed: ${data.error || 'Unknown error'}</span>\n`;
+                }
+            } catch (error) {
+                output.innerHTML += `<span class="error">Error: ${error.message}</span>\n`;
+                output.innerHTML += `This is likely a CORS issue. Make sure your API is configured to allow cross-origin requests.\n`;
+            }
+        });
+    </script>
+</body>
+</html>

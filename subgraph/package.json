@@ -1,0 +1,19 @@
+{
+  "name": "bnbznn-subgraph",
+  "version": "1.0.0",
+  "description": "The Graph subgraph for BNBZNN referral system",
+  "scripts": {
+    "codegen:eth": "graph codegen subgraph-ethereum.yaml",
+    "build:eth": "graph build subgraph-ethereum.yaml",
+    "deploy:eth": "graph deploy --studio bnbznn-ethereum subgraph-ethereum.yaml",
+    "codegen:bsc": "graph codegen subgraph-bsc.yaml",
+    "build:bsc": "graph build subgraph-bsc.yaml",
+    "deploy:bsc": "graph deploy --studio bnbznn-bsc subgraph-bsc.yaml",
+    "codegen": "npm run codegen:eth && npm run codegen:bsc",
+    "build": "npm run build:eth && npm run build:bsc"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.69.0",
+    "@graphprotocol/graph-ts": "0.31.0"
+  }
+}
