@@ -28,6 +28,7 @@ import Roadmap from "./pages/Roadmap";
 import FAQ from "./pages/FAQ";
 import ReferralDashboard from "./pages/ReferralDashboard";
 import ReferralProgram from "./pages/ReferralProgram";
+import OgImage from "./pages/OgImage";
 
 
 const App = () => {
@@ -65,6 +66,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/referral-program" element={<ReferralProgram />} />
+        <Route path="/og/:refCode" element={<OgImage />} />
       </Routes>
       <BackToTop />
       <ToastContainer

@@ -1,5 +1,5 @@
 // src/components/referral/MaterialsTab.jsx
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiDownload, FiCopy, FiImage, FiShare2, FiCode, FiExternalLink, FiCamera, FiUpload, FiCheck } from 'react-icons/fi';
 import { FaTwitter, FaTelegramPlane, FaWhatsapp, FaRedditAlien, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
@@ -31,6 +31,11 @@ import story2 from '../../assets/images/social-cards/story/story2.png';
 import story3 from '../../assets/images/social-cards/story/story3.png';
 import story4 from '../../assets/images/social-cards/story/story4.png';
 import story5 from '../../assets/images/social-cards/story/story5.png';
+
+// OG Preview backgrounds (1200×628)
+import og1 from '../../assets/images/social-cards/og-preview/og1.png';
+import og2 from '../../assets/images/social-cards/og-preview/og2.png';
+import og3 from '../../assets/images/social-cards/og-preview/og3.png';
 
 const Wrapper = styled.div`
   margin-top: 30px;
@@ -333,6 +338,28 @@ const backgroundOptions = [
   },
 ];
 
+// OG Background options for Dynamic OG Image
+const ogBackgroundOptions = [
+  { 
+    key: 'og1', 
+    label: 'OG Background 1', 
+    src: og1,
+    thumbnailSrc: og1
+  },
+  { 
+    key: 'og2', 
+    label: 'OG Background 2', 
+    src: og2,
+    thumbnailSrc: og2
+  },
+  { 
+    key: 'og3', 
+    label: 'OG Background 3', 
+    src: og3,
+    thumbnailSrc: og3
+  },
+];
+
 // Placeholder images are computed dynamically inside the component based on selected background.
 
 function useTokenSymbol() {
@@ -464,6 +491,95 @@ const drawCard = async (canvas, {
   }
 };
 
+// OG Image drawing function (1200x628)
+const drawOgCard = async (canvas, {
+  tokenSymbol, benefit, refCode, referralLink, backgroundImage,
+}) => {
+  const w = 1200;
+  const h = 628;
+  const ctx = canvas.getContext('2d');
+  canvas.width = w;
+  canvas.height = h;
+
+  // Background - custom image
+  const img = new Image();
+  await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = backgroundImage;
+  });
+  ctx.drawImage(img, 0, 0, w, h);
+
+  // Typography
+  const titleFontFamily = 'Blinker, sans-serif';
+  const benefitFontFamily = 'Blinker, sans-serif';
+
+  // Layout
+  const marginLeft = Math.round(w * 0.06);
+  const topY = Math.round(h * 0.12);
+
+  // Title: Buy $TOKEN
+  const titleFontSize = Math.round(w * 0.06);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = `bold ${titleFontSize}px ${titleFontFamily}`;
+  ctx.textBaseline = 'top';
+  const title = `Buy $${tokenSymbol}`;
+  ctx.fillText(title, marginLeft, topY);
+  const titleBottom = topY + titleFontSize;
+
+  // Benefit text
+  const bodyFontSize = Math.round(w * 0.028);
+  const lineHeight = Math.round(bodyFontSize * 1.4);
+  ctx.fillStyle = '#dfe7ef';
+  ctx.font = `${bodyFontSize}px ${benefitFontFamily}`;
+  const maxWidth = Math.round(w * 0.85);
+  const textX = marginLeft;
+  const textY = titleBottom + Math.round(h * 0.08);
+  
+  // Word wrap for benefit text
+  const words = benefit.split(' ');
+  let line = '';
+  let y = textY;
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && n > 0) {
+      ctx.fillText(line, textX, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, textX, y);
+
+  // Watermark with {REF_CODE}
+  const watermark = `{${refCode}}`;
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.font = `${Math.round(w * 0.025)}px monospace`;
+  const wmW = ctx.measureText(watermark).width;
+  const wmMargin = Math.round(w * 0.03);
+  ctx.fillText(watermark, w - wmW - wmMargin, h - wmMargin);
+
+  // QR Code (smaller for OG images)
+  if (referralLink) {
+    const qrSize = Math.round(Math.min(w, h) * 0.12);
+    const qrDataUrl = await QRCode.toDataURL(referralLink, {
+      width: qrSize,
+      margin: 1,
+      color: { dark: '#000000', light: '#00000000' },
+      errorCorrectionLevel: 'M',
+    });
+    const qrImg = new Image();
+    await new Promise((resolve) => { qrImg.onload = resolve; qrImg.src = qrDataUrl; });
+    const pad = wmMargin;
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    const bg = Math.round(qrSize * 1.05);
+    ctx.fillRect(pad - 4, h - bg - pad, bg, bg);
+    ctx.drawImage(qrImg, pad, h - qrSize - pad, qrSize, qrSize);
+  }
+};
+
 const ShareButtons = ({ text, url }) => {
   const enc = encodeURIComponent;
 
@@ -521,10 +637,19 @@ const MaterialsTab = () => {
 
   // Controls
   const [benefit, setBenefit] = useState('Utility-rich token with real use cases. Early buyers benefit most.');
+
+  // Store benefit in localStorage when it changes
+  useEffect(() => {
+    if (refCode && benefit) {
+      localStorage.setItem(`og-benefit-${refCode}`, benefit);
+    }
+  }, [refCode, benefit]);
   const [includeQr, setIncludeQr] = useState(true);
   const [selectedBackground, setSelectedBackground] = useState('background1');
+  const [selectedOgBackground, setSelectedOgBackground] = useState('og1');
 
   const [generated, setGenerated] = useState({ link: false, square: false, story: false });
+  const [ogGenerated, setOgGenerated] = useState(false);
 
   // Copy state for buttons
   const [copiedOg, setCopiedOg] = useState(false);
@@ -548,6 +673,9 @@ const MaterialsTab = () => {
     square: useRef(null),
     story: useRef(null),
   };
+
+  // OG Image canvas (1200x628)
+  const ogCanvas = useRef(null);
 
 
 	  // Dynamically compute placeholder images based on selected background
@@ -618,7 +746,24 @@ const MaterialsTab = () => {
     setGenerated(next);
   };
 
-
+  const generateOgImage = useCallback(async () => {
+    if (!refCode) return;
+    
+    // Get the selected OG background
+    const selectedOgBgOption = ogBackgroundOptions.find(bg => bg.key === selectedOgBackground);
+    if (!selectedOgBgOption) return;
+    
+    const opts = {
+      tokenSymbol,
+      benefit,
+      refCode,
+      referralLink: refLink,
+      backgroundImage: selectedOgBgOption.src
+    };
+    
+    await drawOgCard(ogCanvas.current, opts);
+    setOgGenerated(true);
+  }, [refCode, selectedOgBackground, tokenSymbol, benefit, refLink]);
 
   const downloadCanvas = (key) => {
     const c = canvases[key].current;
@@ -628,6 +773,15 @@ const MaterialsTab = () => {
     link.href = c.toDataURL('image/png');
     link.click();
   };
+
+
+
+  // Auto-generate OG image when component loads or refCode changes
+  useEffect(() => {
+    if (refCode && ogCanvas.current) {
+      generateOgImage();
+    }
+  }, [refCode, selectedOgBackground, generateOgImage]);
 
   const shareCopy = `Why buy $${tokenSymbol}? Real utility, strong roadmap, and early stage advantage. Here's how to buy in minutes:`;
 
@@ -640,7 +794,7 @@ const MaterialsTab = () => {
     yt: `BUY $${tokenSymbol} — Step-by-step link: ${refLink}\n\nWhy buy: utility, roadmap, and early momentum.\n\nDisclaimer: ${disclosure}`,
   };
 
-  const ogUrl = `${window.location.origin}/og/${encodeURIComponent(refCode || 'YOURCODE')}.svg`;
+  const ogUrl = `${window.location.origin}/#/og/${encodeURIComponent(refCode || 'YOURCODE')}?bg=${selectedOgBackground}`;
   const widgetSrc = `${window.location.origin}/embed/buy-widget.html?ref=${encodeURIComponent(refCode || 'YOURCODE')}`;
 
   return (
@@ -720,6 +874,7 @@ const MaterialsTab = () => {
       {/* Dynamic OG Image */}
       <div className="card">
         <div className="card-title"><FiImage /> Dynamic OG Image for Link Previews</div>
+        
         <div style={{ color: '#ccc', marginBottom: 8 }}>OG Image URL</div>
         <div className="controls">
           <input className="input" value={ogUrl} readOnly placeholder="OG Image URL" onFocus={(e)=> e.target.select()} />
@@ -730,13 +885,57 @@ const MaterialsTab = () => {
             <a className="btn" href={ogUrl} target="_blank" rel="noreferrer"><FiExternalLink /> Open</a>
           </div>
         </div>
+        
+        {/* Background Selector for OG Images */}
+        <div className="background-selector">
+          <span style={{ color: '#ccc', whiteSpace: 'nowrap' }}>Background:</span>
+          <div className="background-options">
+            {ogBackgroundOptions.map(bg => (
+              <img
+                key={bg.key}
+                src={bg.thumbnailSrc}
+                alt={bg.label}
+                className={`background-option ${selectedOgBackground === bg.key ? 'selected' : ''}`}
+                onClick={() => setSelectedOgBackground(bg.key)}
+                title={bg.label}
+              />
+            ))}
+          </div>
+        </div>
+
+
+
+        {/* OG Image Preview */}
+        <div className="canvas-container">
+          <div className="canvas-wrapper">
+            {!ogGenerated && (
+              <div className="placeholder-image" style={{ 
+                width: '100%', 
+                aspectRatio: '1200/628',
+                background: '#2a2a2a',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#666',
+                fontSize: '14px'
+              }}>
+                Select a background to generate preview
+              </div>
+            )}
+            <canvas
+              ref={ogCanvas}
+              style={{
+                maxWidth: '100%',
+                width: '100%',
+                display: ogGenerated ? 'block' : 'none'
+              }}
+            />
+          </div>
+
+        </div>
         <div style={{ color: '#ccc', marginTop: 8 }}>Note</div>
         <div style={{ color: '#9fb3c8' }}>
-          This endpoint renders a dynamic banner customized with your code. Some platforms cache previews.
-        </div>
-        <div style={{ color: '#ccc', marginTop: 8 }}>Preview</div>
-        <div className="canvasBox">
-          <img src={ogUrl} alt="OG image preview" style={{ width: '100%', display: 'block', borderRadius: 8 }} />
+          Generate custom OG images for social media link previews. Choose from different backgrounds to create shareable URLs.
         </div>
 
       </div>
