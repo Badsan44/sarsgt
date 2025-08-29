@@ -799,6 +799,13 @@ const MaterialsTab = () => {
 
   return (
     <Wrapper>
+      {/* One-click Share Buttons */}
+      <div className="card">
+        <div className="card-title"><FiShare2 /> One-click Share (BUY-focused)</div>
+        <ShareButtons text={shareCopy} url={refLink} />
+        <div style={{ color: '#9fb3c8', marginTop: 10, fontSize: 12 }}>Copy focuses on why buy + how to buy.</div>
+      </div>
+
       {/* Social Cards Generator */}
       <div className="card">
         <div className="card-title"><FiImage /> Social Cards for X / Instagram</div>
@@ -864,12 +871,7 @@ const MaterialsTab = () => {
         </div>
       </div>
 
-      {/* One-click Share Buttons */}
-      <div className="card">
-        <div className="card-title"><FiShare2 /> One-click Share (BUY-focused)</div>
-        <ShareButtons text={shareCopy} url={refLink} />
-        <div style={{ color: '#9fb3c8', marginTop: 10, fontSize: 12 }}>Copy focuses on why buy + how to buy.</div>
-      </div>
+
 
       {/* Dynamic OG Image */}
       <div className="card">
