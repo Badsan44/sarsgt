@@ -2,8 +2,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiDownload, FiCopy, FiImage, FiShare2, FiCode, FiExternalLink, FiCamera, FiUpload, FiCheck } from 'react-icons/fi';
-import { FaTwitter, FaTelegramPlane, FaWhatsapp, FaRedditAlien, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
-import { SiGmail } from 'react-icons/si';
+import { FaTelegramPlane, FaWhatsapp, FaRedditAlien, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
+import { SiGmail, SiX } from 'react-icons/si';
 import { useAccount, useReadContract } from 'wagmi';
 import QRCode from 'qrcode';
 import { generateReferralLink, getReferralCodeForAddress, copyToClipboard } from '../../utils/referralManager';
@@ -615,7 +615,7 @@ const ShareButtons = ({ text, url }) => {
           className="btn"
           onClick={(e) => { e.preventDefault(); openSharePopup(i.url, { w: i.w, h: i.h }); }}
         >
-          {i.key === 'twitter' && <FaTwitter />}
+          {i.key === 'twitter' && <SiX />}
           {i.key === 'telegram' && <FaTelegramPlane />}
           {i.key === 'whatsapp' && <FaWhatsapp />}
           {i.key === 'reddit' && <FaRedditAlien />}
