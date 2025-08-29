@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiDownload, FiCopy, FiImage, FiShare2, FiCode, FiExternalLink, FiCamera, FiUpload, FiCheck } from 'react-icons/fi';
-import { FaTelegramPlane, FaWhatsapp, FaRedditAlien, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
+import { FaTelegramPlane, FaInstagram, FaRedditAlien, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
 import { SiGmail, SiX } from 'react-icons/si';
 import { useAccount, useReadContract } from 'wagmi';
 import QRCode from 'qrcode';
@@ -259,16 +259,16 @@ const Wrapper = styled.div`
     box-shadow: 0 3px 10px rgba(0, 136, 204, 0.3);
   }
   
-  .share-bar .btn.btn-whatsapp {
-    background: #25d366 !important;
-    border-color: #25d366 !important;
+  .share-bar .btn.btn-instagram {
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%) !important;
+    border-color: #e1306c !important;
     color: #ffffff !important;
   }
-  .share-bar .btn.btn-whatsapp:hover {
-    background: #1da851 !important;
-    border-color: #1da851 !important;
+  .share-bar .btn.btn-instagram:hover {
+    background: linear-gradient(45deg, #d6842a 0%,#c55a33 25%,#b91f3a 50%,#a91e5a 75%,#9a1577 100%) !important;
+    border-color: #c42d5c !important;
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
+    box-shadow: 0 3px 10px rgba(225, 48, 108, 0.3);
   }
   
   .share-bar .btn.btn-reddit {
@@ -683,7 +683,7 @@ const ShareButtons = ({ text, url }) => {
   const items = [
     { key: 'twitter', label: 'X / Twitter', url: `https://twitter.com/intent/tweet?text=${enc(text)}&url=${enc(url)}`, w: 600, h: 450 },
     { key: 'telegram', label: 'Telegram', url: `https://t.me/share/url?url=${enc(url)}&text=${enc(text)}`, w: 600, h: 600 },
-    { key: 'whatsapp', label: 'WhatsApp', url: `https://api.whatsapp.com/send?text=${enc(text + ' ' + url)}`, w: 600, h: 600 },
+    { key: 'instagram', label: 'Instagram', url: `https://www.instagram.com/`, w: 600, h: 600 },
     { key: 'reddit', label: 'Reddit', url: `https://www.reddit.com/submit?url=${enc(url)}&title=${enc(text)}`, w: 780, h: 600 },
     // New buttons
     { key: 'facebook', label: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}&quote=${enc(text)}`, w: 600, h: 400 },
@@ -702,7 +702,7 @@ const ShareButtons = ({ text, url }) => {
         >
           {i.key === 'twitter' && <SiX />}
           {i.key === 'telegram' && <FaTelegramPlane />}
-          {i.key === 'whatsapp' && <FaWhatsapp />}
+          {i.key === 'instagram' && <FaInstagram />}
           {i.key === 'reddit' && <FaRedditAlien />}
           {i.key === 'facebook' && <FaFacebookF />}
           {i.key === 'linkedin' && <FaLinkedinIn />}
