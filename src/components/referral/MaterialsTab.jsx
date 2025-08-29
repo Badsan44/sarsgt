@@ -234,75 +234,89 @@ const Wrapper = styled.div`
     font-size: 1rem;
   }
 
-  /* Social media brand colors */
+  /* Social media brand colors - override default button styles */
   .share-bar .btn.btn-twitter {
-    background-color: #000000;
-    border-color: #000000;
-    color: #ffffff;
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
   }
   .share-bar .btn.btn-twitter:hover {
-    background-color: #1a1a1a;
-    border-color: #1a1a1a;
+    background: #1a1a1a !important;
+    border-color: #1a1a1a !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   }
   
   .share-bar .btn.btn-telegram {
-    background-color: #0088cc;
-    border-color: #0088cc;
-    color: #ffffff;
+    background: #0088cc !important;
+    border-color: #0088cc !important;
+    color: #ffffff !important;
   }
   .share-bar .btn.btn-telegram:hover {
-    background-color: #006ba3;
-    border-color: #006ba3;
+    background: #006ba3 !important;
+    border-color: #006ba3 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 136, 204, 0.3);
   }
   
   .share-bar .btn.btn-whatsapp {
-    background-color: #25d366;
-    border-color: #25d366;
-    color: #ffffff;
+    background: #25d366 !important;
+    border-color: #25d366 !important;
+    color: #ffffff !important;
   }
   .share-bar .btn.btn-whatsapp:hover {
-    background-color: #1da851;
-    border-color: #1da851;
+    background: #1da851 !important;
+    border-color: #1da851 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
   }
   
   .share-bar .btn.btn-reddit {
-    background-color: #ff4500;
-    border-color: #ff4500;
-    color: #ffffff;
+    background: #ff4500 !important;
+    border-color: #ff4500 !important;
+    color: #ffffff !important;
   }
   .share-bar .btn.btn-reddit:hover {
-    background-color: #e03d00;
-    border-color: #e03d00;
+    background: #e03d00 !important;
+    border-color: #e03d00 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(255, 69, 0, 0.3);
   }
   
   .share-bar .btn.btn-facebook {
-    background-color: #1877f2;
-    border-color: #1877f2;
-    color: #ffffff;
+    background: #1877f2 !important;
+    border-color: #1877f2 !important;
+    color: #ffffff !important;
   }
   .share-bar .btn.btn-facebook:hover {
-    background-color: #166fe5;
-    border-color: #166fe5;
+    background: #166fe5 !important;
+    border-color: #166fe5 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(24, 119, 242, 0.3);
   }
   
   .share-bar .btn.btn-linkedin {
-    background-color: #0077b5;
-    border-color: #0077b5;
-    color: #ffffff;
+    background: #0077b5 !important;
+    border-color: #0077b5 !important;
+    color: #ffffff !important;
   }
   .share-bar .btn.btn-linkedin:hover {
-    background-color: #005885;
-    border-color: #005885;
+    background: #005885 !important;
+    border-color: #005885 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 119, 181, 0.3);
   }
   
   .share-bar .btn.btn-gmail {
-    background-color: #ea4335;
-    border-color: #ea4335;
-    color: #ffffff;
+    background: #ea4335 !important;
+    border-color: #ea4335 !important;
+    color: #ffffff !important;
   }
   .share-bar .btn.btn-gmail:hover {
-    background-color: #d33b2c;
-    border-color: #d33b2c;
+    background: #d33b2c !important;
+    border-color: #d33b2c !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(234, 67, 53, 0.3);
   }
   @media (max-width: 991px) {
     .share-bar { grid-template-columns: repeat(4, minmax(0, 1fr)); }
