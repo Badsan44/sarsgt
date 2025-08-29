@@ -1,9 +1,9 @@
 // src/components/referral/MaterialsTab.jsx
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiDownload, FiCopy, FiImage, FiShare2, FiCode, FiExternalLink, FiCamera, FiUpload, FiCheck } from 'react-icons/fi';
-import { FaTwitter, FaTelegramPlane, FaWhatsapp, FaRedditAlien, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
-import { SiGmail } from 'react-icons/si';
+import { FaTelegramPlane, FaInstagram, FaRedditAlien, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
+import { SiGmail, SiX } from 'react-icons/si';
 import { useAccount, useReadContract } from 'wagmi';
 import QRCode from 'qrcode';
 import { generateReferralLink, getReferralCodeForAddress, copyToClipboard } from '../../utils/referralManager';
@@ -31,6 +31,11 @@ import story2 from '../../assets/images/social-cards/story/story2.png';
 import story3 from '../../assets/images/social-cards/story/story3.png';
 import story4 from '../../assets/images/social-cards/story/story4.png';
 import story5 from '../../assets/images/social-cards/story/story5.png';
+
+// OG Preview backgrounds (1200×628)
+import og1 from '../../assets/images/social-cards/og-preview/og1.png';
+import og2 from '../../assets/images/social-cards/og-preview/og2.png';
+import og3 from '../../assets/images/social-cards/og-preview/og3.png';
 
 const Wrapper = styled.div`
   margin-top: 30px;
@@ -228,6 +233,91 @@ const Wrapper = styled.div`
   .share-bar .btn svg {
     font-size: 1rem;
   }
+
+  /* Social media brand colors - override default button styles */
+  .share-bar .btn.btn-twitter {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+  }
+  .share-bar .btn.btn-twitter:hover {
+    background: #1a1a1a !important;
+    border-color: #1a1a1a !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .share-bar .btn.btn-telegram {
+    background: #0088cc !important;
+    border-color: #0088cc !important;
+    color: #ffffff !important;
+  }
+  .share-bar .btn.btn-telegram:hover {
+    background: #006ba3 !important;
+    border-color: #006ba3 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 136, 204, 0.3);
+  }
+  
+  .share-bar .btn.btn-instagram {
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%) !important;
+    border-color: #e1306c !important;
+    color: #ffffff !important;
+  }
+  .share-bar .btn.btn-instagram:hover {
+    background: linear-gradient(45deg, #d6842a 0%,#c55a33 25%,#b91f3a 50%,#a91e5a 75%,#9a1577 100%) !important;
+    border-color: #c42d5c !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(225, 48, 108, 0.3);
+  }
+  
+  .share-bar .btn.btn-reddit {
+    background: #ff4500 !important;
+    border-color: #ff4500 !important;
+    color: #ffffff !important;
+  }
+  .share-bar .btn.btn-reddit:hover {
+    background: #e03d00 !important;
+    border-color: #e03d00 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(255, 69, 0, 0.3);
+  }
+  
+  .share-bar .btn.btn-facebook {
+    background: #1877f2 !important;
+    border-color: #1877f2 !important;
+    color: #ffffff !important;
+  }
+  .share-bar .btn.btn-facebook:hover {
+    background: #166fe5 !important;
+    border-color: #166fe5 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(24, 119, 242, 0.3);
+  }
+  
+  .share-bar .btn.btn-linkedin {
+    background: #0077b5 !important;
+    border-color: #0077b5 !important;
+    color: #ffffff !important;
+  }
+  .share-bar .btn.btn-linkedin:hover {
+    background: #005885 !important;
+    border-color: #005885 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 119, 181, 0.3);
+  }
+  
+  .share-bar .btn.btn-gmail {
+    background: #ea4335 !important;
+    border-color: #ea4335 !important;
+    color: #ffffff !important;
+  }
+  .share-bar .btn.btn-gmail:hover {
+    background: #d33b2c !important;
+    border-color: #d33b2c !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(234, 67, 53, 0.3);
+  }
   @media (max-width: 991px) {
     .share-bar { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
@@ -330,6 +420,28 @@ const backgroundOptions = [
     postSrc: post5, 
     storySrc: story5,
     thumbnailSrc: post5
+  },
+];
+
+// OG Background options for Dynamic OG Image
+const ogBackgroundOptions = [
+  { 
+    key: 'og1', 
+    label: 'OG Background 1', 
+    src: og1,
+    thumbnailSrc: og1
+  },
+  { 
+    key: 'og2', 
+    label: 'OG Background 2', 
+    src: og2,
+    thumbnailSrc: og2
+  },
+  { 
+    key: 'og3', 
+    label: 'OG Background 3', 
+    src: og3,
+    thumbnailSrc: og3
   },
 ];
 
@@ -464,6 +576,95 @@ const drawCard = async (canvas, {
   }
 };
 
+// OG Image drawing function (1200x628)
+const drawOgCard = async (canvas, {
+  tokenSymbol, benefit, refCode, referralLink, backgroundImage,
+}) => {
+  const w = 1200;
+  const h = 628;
+  const ctx = canvas.getContext('2d');
+  canvas.width = w;
+  canvas.height = h;
+
+  // Background - custom image
+  const img = new Image();
+  await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = backgroundImage;
+  });
+  ctx.drawImage(img, 0, 0, w, h);
+
+  // Typography
+  const titleFontFamily = 'Blinker, sans-serif';
+  const benefitFontFamily = 'Blinker, sans-serif';
+
+  // Layout
+  const marginLeft = Math.round(w * 0.06);
+  const topY = Math.round(h * 0.12);
+
+  // Title: Buy $TOKEN
+  const titleFontSize = Math.round(w * 0.06);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = `bold ${titleFontSize}px ${titleFontFamily}`;
+  ctx.textBaseline = 'top';
+  const title = `Buy $${tokenSymbol}`;
+  ctx.fillText(title, marginLeft, topY);
+  const titleBottom = topY + titleFontSize;
+
+  // Benefit text
+  const bodyFontSize = Math.round(w * 0.028);
+  const lineHeight = Math.round(bodyFontSize * 1.4);
+  ctx.fillStyle = '#dfe7ef';
+  ctx.font = `${bodyFontSize}px ${benefitFontFamily}`;
+  const maxWidth = Math.round(w * 0.85);
+  const textX = marginLeft;
+  const textY = titleBottom + Math.round(h * 0.08);
+  
+  // Word wrap for benefit text
+  const words = benefit.split(' ');
+  let line = '';
+  let y = textY;
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && n > 0) {
+      ctx.fillText(line, textX, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, textX, y);
+
+  // Watermark with {REF_CODE}
+  const watermark = `{${refCode}}`;
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.font = `${Math.round(w * 0.025)}px monospace`;
+  const wmW = ctx.measureText(watermark).width;
+  const wmMargin = Math.round(w * 0.03);
+  ctx.fillText(watermark, w - wmW - wmMargin, h - wmMargin);
+
+  // QR Code (smaller for OG images)
+  if (referralLink) {
+    const qrSize = Math.round(Math.min(w, h) * 0.12);
+    const qrDataUrl = await QRCode.toDataURL(referralLink, {
+      width: qrSize,
+      margin: 1,
+      color: { dark: '#000000', light: '#00000000' },
+      errorCorrectionLevel: 'M',
+    });
+    const qrImg = new Image();
+    await new Promise((resolve) => { qrImg.onload = resolve; qrImg.src = qrDataUrl; });
+    const pad = wmMargin;
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    const bg = Math.round(qrSize * 1.05);
+    ctx.fillRect(pad - 4, h - bg - pad, bg, bg);
+    ctx.drawImage(qrImg, pad, h - qrSize - pad, qrSize, qrSize);
+  }
+};
+
 const ShareButtons = ({ text, url }) => {
   const enc = encodeURIComponent;
 
@@ -482,7 +683,7 @@ const ShareButtons = ({ text, url }) => {
   const items = [
     { key: 'twitter', label: 'X / Twitter', url: `https://twitter.com/intent/tweet?text=${enc(text)}&url=${enc(url)}`, w: 600, h: 450 },
     { key: 'telegram', label: 'Telegram', url: `https://t.me/share/url?url=${enc(url)}&text=${enc(text)}`, w: 600, h: 600 },
-    { key: 'whatsapp', label: 'WhatsApp', url: `https://api.whatsapp.com/send?text=${enc(text + ' ' + url)}`, w: 600, h: 600 },
+    { key: 'instagram', label: 'Instagram', url: `https://www.instagram.com/`, w: 600, h: 600 },
     { key: 'reddit', label: 'Reddit', url: `https://www.reddit.com/submit?url=${enc(url)}&title=${enc(text)}`, w: 780, h: 600 },
     // New buttons
     { key: 'facebook', label: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}&quote=${enc(text)}`, w: 600, h: 400 },
@@ -496,12 +697,12 @@ const ShareButtons = ({ text, url }) => {
         <button
           key={i.key}
           type="button"
-          className="btn"
+          className={`btn btn-${i.key}`}
           onClick={(e) => { e.preventDefault(); openSharePopup(i.url, { w: i.w, h: i.h }); }}
         >
-          {i.key === 'twitter' && <FaTwitter />}
+          {i.key === 'twitter' && <SiX />}
           {i.key === 'telegram' && <FaTelegramPlane />}
-          {i.key === 'whatsapp' && <FaWhatsapp />}
+          {i.key === 'instagram' && <FaInstagram />}
           {i.key === 'reddit' && <FaRedditAlien />}
           {i.key === 'facebook' && <FaFacebookF />}
           {i.key === 'linkedin' && <FaLinkedinIn />}
@@ -521,10 +722,19 @@ const MaterialsTab = () => {
 
   // Controls
   const [benefit, setBenefit] = useState('Utility-rich token with real use cases. Early buyers benefit most.');
+
+  // Store benefit in localStorage when it changes
+  useEffect(() => {
+    if (refCode && benefit) {
+      localStorage.setItem(`og-benefit-${refCode}`, benefit);
+    }
+  }, [refCode, benefit]);
   const [includeQr, setIncludeQr] = useState(true);
   const [selectedBackground, setSelectedBackground] = useState('background1');
+  const [selectedOgBackground, setSelectedOgBackground] = useState('og1');
 
   const [generated, setGenerated] = useState({ link: false, square: false, story: false });
+  const [ogGenerated, setOgGenerated] = useState(false);
 
   // Copy state for buttons
   const [copiedOg, setCopiedOg] = useState(false);
@@ -548,6 +758,9 @@ const MaterialsTab = () => {
     square: useRef(null),
     story: useRef(null),
   };
+
+  // OG Image canvas (1200x628)
+  const ogCanvas = useRef(null);
 
 
 	  // Dynamically compute placeholder images based on selected background
@@ -618,7 +831,24 @@ const MaterialsTab = () => {
     setGenerated(next);
   };
 
-
+  const generateOgImage = useCallback(async () => {
+    if (!refCode) return;
+    
+    // Get the selected OG background
+    const selectedOgBgOption = ogBackgroundOptions.find(bg => bg.key === selectedOgBackground);
+    if (!selectedOgBgOption) return;
+    
+    const opts = {
+      tokenSymbol,
+      benefit,
+      refCode,
+      referralLink: refLink,
+      backgroundImage: selectedOgBgOption.src
+    };
+    
+    await drawOgCard(ogCanvas.current, opts);
+    setOgGenerated(true);
+  }, [refCode, selectedOgBackground, tokenSymbol, benefit, refLink]);
 
   const downloadCanvas = (key) => {
     const c = canvases[key].current;
@@ -628,6 +858,15 @@ const MaterialsTab = () => {
     link.href = c.toDataURL('image/png');
     link.click();
   };
+
+
+
+  // Auto-generate OG image when component loads or refCode changes
+  useEffect(() => {
+    if (refCode && ogCanvas.current) {
+      generateOgImage();
+    }
+  }, [refCode, selectedOgBackground, generateOgImage]);
 
   const shareCopy = `Why buy $${tokenSymbol}? Real utility, strong roadmap, and early stage advantage. Here's how to buy in minutes:`;
 
@@ -640,11 +879,18 @@ const MaterialsTab = () => {
     yt: `BUY $${tokenSymbol} — Step-by-step link: ${refLink}\n\nWhy buy: utility, roadmap, and early momentum.\n\nDisclaimer: ${disclosure}`,
   };
 
-  const ogUrl = `${window.location.origin}/og/${encodeURIComponent(refCode || 'YOURCODE')}.svg`;
+  const ogUrl = `${window.location.origin}/#/og/${encodeURIComponent(refCode || 'YOURCODE')}?bg=${selectedOgBackground}`;
   const widgetSrc = `${window.location.origin}/embed/buy-widget.html?ref=${encodeURIComponent(refCode || 'YOURCODE')}`;
 
   return (
     <Wrapper>
+      {/* One-click Share Buttons */}
+      <div className="card">
+        <div className="card-title"><FiShare2 /> One-click Share (BUY-focused)</div>
+        <ShareButtons text={shareCopy} url={refLink} />
+        <div style={{ color: '#9fb3c8', marginTop: 10, fontSize: 12 }}>Copy focuses on why buy + how to buy.</div>
+      </div>
+
       {/* Social Cards Generator */}
       <div className="card">
         <div className="card-title"><FiImage /> Social Cards for X / Instagram</div>
@@ -710,16 +956,12 @@ const MaterialsTab = () => {
         </div>
       </div>
 
-      {/* One-click Share Buttons */}
-      <div className="card">
-        <div className="card-title"><FiShare2 /> One-click Share (BUY-focused)</div>
-        <ShareButtons text={shareCopy} url={refLink} />
-        <div style={{ color: '#9fb3c8', marginTop: 10, fontSize: 12 }}>Copy focuses on why buy + how to buy.</div>
-      </div>
+
 
       {/* Dynamic OG Image */}
       <div className="card">
         <div className="card-title"><FiImage /> Dynamic OG Image for Link Previews</div>
+        
         <div style={{ color: '#ccc', marginBottom: 8 }}>OG Image URL</div>
         <div className="controls">
           <input className="input" value={ogUrl} readOnly placeholder="OG Image URL" onFocus={(e)=> e.target.select()} />
@@ -730,13 +972,57 @@ const MaterialsTab = () => {
             <a className="btn" href={ogUrl} target="_blank" rel="noreferrer"><FiExternalLink /> Open</a>
           </div>
         </div>
+        
+        {/* Background Selector for OG Images */}
+        <div className="background-selector">
+          <span style={{ color: '#ccc', whiteSpace: 'nowrap' }}>Background:</span>
+          <div className="background-options">
+            {ogBackgroundOptions.map(bg => (
+              <img
+                key={bg.key}
+                src={bg.thumbnailSrc}
+                alt={bg.label}
+                className={`background-option ${selectedOgBackground === bg.key ? 'selected' : ''}`}
+                onClick={() => setSelectedOgBackground(bg.key)}
+                title={bg.label}
+              />
+            ))}
+          </div>
+        </div>
+
+
+
+        {/* OG Image Preview */}
+        <div className="canvas-container">
+          <div className="canvas-wrapper">
+            {!ogGenerated && (
+              <div className="placeholder-image" style={{ 
+                width: '100%', 
+                aspectRatio: '1200/628',
+                background: '#2a2a2a',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#666',
+                fontSize: '14px'
+              }}>
+                Select a background to generate preview
+              </div>
+            )}
+            <canvas
+              ref={ogCanvas}
+              style={{
+                maxWidth: '100%',
+                width: '100%',
+                display: ogGenerated ? 'block' : 'none'
+              }}
+            />
+          </div>
+
+        </div>
         <div style={{ color: '#ccc', marginTop: 8 }}>Note</div>
         <div style={{ color: '#9fb3c8' }}>
-          This endpoint renders a dynamic banner customized with your code. Some platforms cache previews.
-        </div>
-        <div style={{ color: '#ccc', marginTop: 8 }}>Preview</div>
-        <div className="canvasBox">
-          <img src={ogUrl} alt="OG image preview" style={{ width: '100%', display: 'block', borderRadius: 8 }} />
+          Generate custom OG images for social media link previews. Choose from different backgrounds to create shareable URLs.
         </div>
 
       </div>
