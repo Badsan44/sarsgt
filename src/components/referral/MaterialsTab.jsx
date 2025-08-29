@@ -233,6 +233,77 @@ const Wrapper = styled.div`
   .share-bar .btn svg {
     font-size: 1rem;
   }
+
+  /* Social media brand colors */
+  .share-bar .btn.btn-twitter {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+  }
+  .share-bar .btn.btn-twitter:hover {
+    background-color: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+  
+  .share-bar .btn.btn-telegram {
+    background-color: #0088cc;
+    border-color: #0088cc;
+    color: #ffffff;
+  }
+  .share-bar .btn.btn-telegram:hover {
+    background-color: #006ba3;
+    border-color: #006ba3;
+  }
+  
+  .share-bar .btn.btn-whatsapp {
+    background-color: #25d366;
+    border-color: #25d366;
+    color: #ffffff;
+  }
+  .share-bar .btn.btn-whatsapp:hover {
+    background-color: #1da851;
+    border-color: #1da851;
+  }
+  
+  .share-bar .btn.btn-reddit {
+    background-color: #ff4500;
+    border-color: #ff4500;
+    color: #ffffff;
+  }
+  .share-bar .btn.btn-reddit:hover {
+    background-color: #e03d00;
+    border-color: #e03d00;
+  }
+  
+  .share-bar .btn.btn-facebook {
+    background-color: #1877f2;
+    border-color: #1877f2;
+    color: #ffffff;
+  }
+  .share-bar .btn.btn-facebook:hover {
+    background-color: #166fe5;
+    border-color: #166fe5;
+  }
+  
+  .share-bar .btn.btn-linkedin {
+    background-color: #0077b5;
+    border-color: #0077b5;
+    color: #ffffff;
+  }
+  .share-bar .btn.btn-linkedin:hover {
+    background-color: #005885;
+    border-color: #005885;
+  }
+  
+  .share-bar .btn.btn-gmail {
+    background-color: #ea4335;
+    border-color: #ea4335;
+    color: #ffffff;
+  }
+  .share-bar .btn.btn-gmail:hover {
+    background-color: #d33b2c;
+    border-color: #d33b2c;
+  }
   @media (max-width: 991px) {
     .share-bar { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
@@ -612,7 +683,7 @@ const ShareButtons = ({ text, url }) => {
         <button
           key={i.key}
           type="button"
-          className="btn"
+          className={`btn btn-${i.key}`}
           onClick={(e) => { e.preventDefault(); openSharePopup(i.url, { w: i.w, h: i.h }); }}
         >
           {i.key === 'twitter' && <SiX />}
